@@ -72,7 +72,7 @@ router.post("/register", async (req, res) => {
                 service: 'Gmail', // Use your email service provider
                 auth: {
                     user: 'mernstack04@gmail.com', // Replace with your email address
-                    pass: '....' // Replace with your email password or an app-specific password
+                    pass: '' // Replace with your email password or an app-specific password
                 }
             });
             // generate otp

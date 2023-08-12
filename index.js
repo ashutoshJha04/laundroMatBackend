@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 
 const authRouter = require("./routes/auths");
-
+const orderRouter = require("./routes/order");
 const cors = require("cors");
 
 const path = require("path");
@@ -34,6 +34,7 @@ app.use(morgan("common"));
 
 
 app.use("/api/auths", authRouter);
+app.use("/api/order", orderRouter);
 
 
 
