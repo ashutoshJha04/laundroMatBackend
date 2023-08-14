@@ -18,13 +18,17 @@ router.post("/", async (req, res) => {
             houseVisit: req.body.houseVisit,
             longitude: req.body.longitude,
             latitude: req.body.latitude,
+            razorpaymentId : req.body.id,
+            razorpaymentorderId : req.body.ord_id,
+            paid:req.body.paid,
+            sign : req.body.sign,
         });
         const orDer = await newOrder.save();
         const transporter = nodemailer.createTransport({
             service: 'Gmail', // Use your email service provider
             auth: {
-                user: '', // Replace with your email address
-                pass: '' // Replace with your email password or an app-specific password
+                user: 'mernstack04@gmail.com', // Replace with your email address
+                pass: 'iruikehshifvervf' // Replace with your email password or an app-specific password
             }
         });
         const mailOptions = {

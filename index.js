@@ -4,12 +4,16 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
-
+const Razorpay = require("razorpay");
 const authRouter = require("./routes/auths");
 const orderRouter = require("./routes/order");
 const cors = require("cors");
+const bodyParser = require('body-parser');
+app.use(express.json());
 
 const path = require("path");
+app.use(bodyParser.json());
+
 
 app.use(cors());
 app.use(function(req, res, next) {
@@ -25,11 +29,32 @@ dotenv.config();
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log('connected mongo');
 });
-app.use("/images", express.static(path.join(__dirname, "public/images")));
-app.use(express.json());
+
 app.use(helmet({
   crossOriginResourcePolicy: false,
 }));
+
+// Define a route to handle payment initiation
+app.post('/create-order', async (req, res) => {
+  const { amount, currency } = req.body;
+
+  const options = {
+    amount: amount, // Amount in paise (India's smallest currency unit)
+    currency: currency,
+   
+  };
+
+  try {
+    const order = await razorpay.orders.create(options);
+    console.log(order);
+    res.json(order);
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ error: 'An error occurred while creating the order.' });
+  }
+});
+
+
 app.use(morgan("common"));
 
 
