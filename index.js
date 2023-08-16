@@ -9,6 +9,7 @@ const authRouter = require("./routes/auths");
 const orderRouter = require("./routes/order");
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const laundryRouter = require('./routes/laundry');
 app.use(express.json());
 
 const path = require("path");
@@ -25,7 +26,7 @@ app.use(function(req, res, next) {
 });
 
 dotenv.config();
-
+mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log('connected mongo');
 });
@@ -60,6 +61,7 @@ app.use(morgan("common"));
 
 app.use("/api/auths", authRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/laundry", laundryRouter);
 
 
 

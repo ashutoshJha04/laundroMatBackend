@@ -70,10 +70,7 @@ router.post("/register", async (req, res) => {
             // Create a transporter object using the default SMTP transport
             const transporter = nodemailer.createTransport({
                 service: 'Gmail', // Use your email service provider
-                auth: {
-                    user: 'mernstack04@gmail.com', // Replace with your email address
-                    pass: 'iruikehshifvervf' // Replace with your email password or an app-specific password
-                }
+                
             });
             // generate otp
 
