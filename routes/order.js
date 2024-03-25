@@ -3,6 +3,34 @@ const User = require("../models/User");
 const Order = require("../models/Order");
 const nodemailer = require('nodemailer');
 
+router.delete('/deleteorder/:id', async (req, res) => {
+    const orderId = req.params.id;
+    try {
+        // Find the order by ID and delete it
+        const deletedOrder = await Order.findByIdAndDelete(orderId);
+        
+        if (!deletedOrder) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        return res.status(200).json({ message: 'Order deleted successfully', deletedOrder });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred' });
+    }
+});
+
+
+router.get('/getorders', async (req, res) => {
+    try {
+        const orders = await Order.find(); // Retrieve all orders
+        console.log(orders);
+        return res.status(200).json({ orders }); // Sending the orders in the response
+    } catch (error) {
+        return res.status(404).json({ message: error.message });
+    }
+});
+
 router.post("/", async (req, res) => {
     try {   
         const newOrder = new Order({
@@ -15,7 +43,7 @@ router.post("/", async (req, res) => {
             serviceAmount: req.body.serviceAmount,
             payment: req.body.payment,
             totalAmount: req.body.totalAmount,
-            houseVisit: req.body.houseVisit,
+            houseVisit: req.body.homevisit,
             longitude: req.body.longitude,
             latitude: req.body.latitude,
             razorpaymentId : req.body.id,
@@ -50,5 +78,27 @@ router.post("/", async (req, res) => {
     }
   });
 
+  router.get('/getorders/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const order = await Order.find({ id }); // Corrected this line
+      console.log(order);
+      return res.status(200).json({order}); // Sending the order in the response
+    } catch (error) {
+      return res.status(404).json({ message: error.message });
+    }
+  });
+
+  router.get('/cancelOrder/:id',async function(req, res) {
+try {
+    const id = req.params.id;
+    const order = await Order.findOneAndRemove({_id : id});
+    return res.status(200).json({message: 'Cancelled'});
+} catch (error) {
+    return res.status(404).json({ message: error.message });
+}
+    
+
+  });
 
 module.exports = router;

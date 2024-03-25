@@ -14,7 +14,10 @@ app.use(express.json());
 
 const path = require("path");
 app.use(bodyParser.json());
-
+const razorpay = new Razorpay({
+  key_id: "rzp_test_Cr90B971ZVQjBr",
+  key_secret: "lv95eiMC7JYHTK6TUvaGXY3l",
+});
 
 app.use(cors());
 app.use(function(req, res, next) {

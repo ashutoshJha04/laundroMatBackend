@@ -70,11 +70,14 @@ router.post("/register", async (req, res) => {
             // Create a transporter object using the default SMTP transport
             const transporter = nodemailer.createTransport({
                 service: 'Gmail', // Use your email service provider
-                
+                auth: {
+                    user: 'mernstack04@gmail.com', // Replace with your email address
+                    pass: 'iruikehshifvervf' // Replace with your email password or an app-specific password
+                }
             });
             // generate otp
 
-                const otp = Math.floor(Math.random() *10000)+1;
+                const otp = Math.floor(Math.random()*10000)+1;
                 console.log(otp);
             // Define the email options
             const mailOptions = {
@@ -132,6 +135,35 @@ router.post("/login", async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'An error occurred' });
+    }
+});
+
+//all user
+router.get('/getusers', async (req, res) => {
+    try {
+        const users = await User.find(); // Retrieve all users
+        console.log(users);
+        return res.status(200).json({ users }); // Sending the users in the response
+    } catch (error) {
+        return res.status(500).json({ message: 'An error occurred' });
+    }
+});
+
+//del user
+router.delete('/deleteuser/:id', async (req, res) => {
+    const userId = req.params.id;
+    try {
+        // Find the user by ID and delete it
+        const deletedUser = await User.findByIdAndDelete(userId);
+        
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.status(200).json({ message: 'User deleted successfully', deletedUser });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred' });
     }
 });
 
