@@ -3,36 +3,7 @@ const User = require("../models/User");
 const OTP = require("../models/OTP");
 const bcrypt = require("bcrypt");
 const nodemailer = require('nodemailer');
-// Register
-// router.post("/register",async(req,res)=>{
-//      try {
-//         //gen new pass
-//         const salt =  await bcrypt.genSalt(10);
-//         const hashed = await bcrypt.hash(req.body.password,salt);
 
-//         const use = await User.findOne({email:req.body.username});
-//         if(use){
-//          return res.json(use);
-//         }else{
-
-
-//         //create new user
-//         const newUser = new User({
-//             username:req.body.username,
-//             email:req.body.email,
-//             password:hashed,
-//          });
-//          //save user and respond
-//         const user = await newUser.save();
-//       }
-
-
-
-//      } catch (error) {
-//         console.log(error);
-
-//      }
-// });
 router.get("/verify/:otp", async (req, res) => {
     const otp = req.params.otp;
     const otpDocument = await OTP.findOne({ otp });
